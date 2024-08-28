@@ -3,7 +3,7 @@ Sub Main
 
 	Dim AName, ExportFolder As String
 
-	AName="BT_8" 'Change for Result Data Name
+	AName="RD_8" 'Change for Result Data Name
 	ExportFolder = "Z:\CST_Daten\Simulationen\ElementSimulation\Ergebnisse\8CH" 'change for directory
 
 	Call PowerExport(AName, ExportFolder)

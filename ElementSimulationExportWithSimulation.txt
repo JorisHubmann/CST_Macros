@@ -1,0 +1,182 @@
+' H_SAR_AsciiExport
+Sub Main ()
+	Dim Nports,Freq As Integer
+	Dim AName, pDimension, Orientation	As String
+
+	Nports=1
+	Freq=297.2
+	Stepsize=4
+
+	AName="IP"
+	pDimension="3D"
+	Orientation=""
+
+	Call SARExport(Nports,Freq,Stepsize, AName, pDimension, Orientation)
+	Call HExport(Nports,Freq,Stepsize, AName, pDimension, Orientation)
+
+	With SimulationTask
+
+.Reset
+
+.Name ("Opt")
+
+
+If Not .DoesExist Then
+
+.Type ("Optimization")
+
+	.Reset
+
+	.Type ("S-Parameters")
+
+.Name ("Opt\SPar")
+
+.SetProperty("fmin", 200)
+
+	.SetProperty("fmax", 400)
+
+	.SetProperty("maximum frequency range", "True")
+
+	.Create
+
+End If
+.Update
+End With
+
+
+
+'set up the optimization settings and start the optimizer
+
+With DSOptimizer
+
+.SetSimulationType( "Opt" )
+
+.SetOptimizerType("Trust_Region")
+
+.SetAlwaysStartFromCurrent(False)
+
+.SetGoalNormNew("SumDiffSq")
+
+.InitParameterList
+
+.SelectParameter("CM", True)
+
+.SetParameterInit(5)
+
+.SetParameterMin(1)
+
+.SetParameterMax(20)
+
+.SelectParameter("CT", True)
+
+.SetParameterInit(5)
+
+.SetParameterMin(1.0)
+
+.SetParameterMax(20)
+
+.DeleteAllGoals
+
+
+
+'define a goal on the S-Parameters
+
+Dim gid As Integer
+
+gid = .AddGoal("1DC Primary Result")
+
+.SelectGoal(gid, True)
+
+.SetGoal1DCResultName("Opt\SPar\S-Parameters\S1,1")
+
+.SetGoalScalarType("magdB20")
+
+.SetGoalOperator("<")
+
+.SetGoalTarget(-50)
+
+.SetGoalRangeType("single")
+'.SetGoalRange(297.2)
+
+
+
+
+.Start 'actually start the optimization process
+
+End With
+End Sub
+
+Sub SARExport(Nports,Freq,Stepsize, AName, pDimension, Orientation)
+
+	Dim ExportFolder As String
+	ExportFolder= "Z:\CST_Daten\Simulationen\ElementSimulation\Ergebnisse\ErgebnisseHSAR"
+	'MkDir ExportFolder
+	'CP-Mode
+	If SelectTreeItem ("2D/3D Results\SAR\SAR (f=297.2) [AC1] (10g)") Then
+
+		Plot3DPlotsOn2DPlane False
+		Wait(1)
+		With ASCIIExport
+			.Reset
+			.FileName (ExportFolder + ".\" + AName + "_" + pDimension + "_SAR" + Orientation + ".h5")
+			.Mode ("FixedWidth")
+			.SetfileType("hdf5")
+			.SetSubvolume(-315,-65,-300,300,-300,300)
+			.UseSubvolume(True)
+			.Step(Stepsize)
+			.Execute
+		End With
+	End If
+
+End Sub
+
+'%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sub HExport(Nports,Freq,Stepsize, AName, pDimension, Orientation)
+
+	Dim ExportFolder As String
+	ExportFolder= "Z:\CST_Daten\Simulationen\ElementSimulation\Ergebnisse\ErgebnisseHSAR"
+	'MkDir ExportFolder
+	'CP-Mode
+	If SelectTreeItem ("2D/3D Results\H-Field\h-field (f="+Freq+") [AC1]") Then
+
+		Plot3DPlotsOn2DPlane False
+		Wait(1)
+		With ASCIIExport
+			.Reset
+			.FileName (ExportFolder + ".\" + AName + "_" + pDimension + "_H" + Orientation + ".h5")
+			.Mode ("FixedWidth")
+			.SetfileType("hdf5")
+			.SetSubvolume(-315,-65,-300,300,-300,300)
+			.UseSubvolume(True)
+			.Step(Stepsize)
+			.Execute
+		End With
+	End If
+
+
+End Sub
+
+Sub SparaCalc
+	With SimulationTask
+	
+		.Reset
+		.Name ("SPara")
+		If .DoesExist Then
+
+			.Delete
+		End If
+		
+		If Not .DoesExist Then
+			.Reset
+			.Type ("S-Parameters")
+			.Name ("SPara")
+			.SetProperty("fmin", 200)
+			.SetProperty("fmax", 400)
+			.SetProperty("maximum frequency range", "True")
+			.Create
+			.Update
+		End If
+
+	End With
+End Sub

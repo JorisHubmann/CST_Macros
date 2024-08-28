@@ -1,0 +1,31 @@
+Sub Main ()
+
+	Call SExport()
+
+End Sub
+
+Sub SExport()
+
+With SimulationTask
+	.Reset
+	.Type ("S-Parameters")
+	.Name ("Spara")
+	If Not .DoesExist Then
+		.Create
+	End If
+
+	With TOUCHSTONE
+   	 	.Reset
+    	.FileName ("Z:\CST_Daten\Ergebnisse\DumpData.\Sleeve")
+	    .Impedance (50)
+	    .FrequencyRange ("Full")
+	    .Renormalize (True)
+	    .UseARResults (False)
+ 	   .SetNSamples (0)
+ 	   .Write
+	End With
+	.Update
+End With
+
+
+End Sub
