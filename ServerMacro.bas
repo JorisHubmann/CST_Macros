@@ -174,19 +174,6 @@ End Sub
 
 Sub SparaExport(ExportFolder)
 
-With TOUCHSTONE
-
-    .Reset
-    .FileName (ExportFolder)
-    .Impedance (50)
-    .ExportType ("S")
-    .Format ("DB")
-    .FrequencyRange ("Full")
-    .Renormalize (True)
-    .UseARResults (False)
-    .SetNSamples (1001)
-    .Write
-
-End With
+TouchstoneExport ( "\Opt\Spar", ExportFolder+"Spara",  "50")
 
 End Sub
