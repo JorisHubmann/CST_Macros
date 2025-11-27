@@ -10,18 +10,18 @@ Sub Main ()
 	Stepsize=2
 	Freq=297.2
 
-	AName="MS_LD" 'Change for Result Data Name
+	AName="PA2CH_FR4PLA" 'Change for Result Data Name
 	pDimension="3D"
 	Orientation=""
-	ExportFolder = "Z:\CST_Daten\Simulationen\ElementSimulation\Ergebnisse\Head\Decoupling" 'change for directory
+	ExportFolder = "Z:\CST_Daten\Simulationen\ElementSimulation\PA\Ergebnisse" 'change for directory
 
 	Phase = Array(0, 0)
 
 	Amp = Array(Sqr(2), Sqr(2))
 
-	Call createModes(Nports,Freq,Phase,Amp)
-	Call CalcSAR(Nports,Freq)
-	Call SARExport(Nports,Freq,Stepsize, AName, pDimension, Orientation,ExportFolder)
+	'Call createModes(Nports,Freq,Phase,Amp)
+	'Call CalcSAR(Nports,Freq)
+	'Call SARExport(Nports,Freq,Stepsize, AName, pDimension, Orientation,ExportFolder)
 	Call HExport(Nports,Freq,Stepsize, AName, pDimension, Orientation,ExportFolder)
 	'Call EExport(Nports,Freq,Stepsize, AName, pDimension, Orientation,ExportFolder)
 	'Call SCExport(Nports,Freq,Stepsize, AName, pDimension, Orientation,ExportFolder)
@@ -98,27 +98,28 @@ Sub CalcSAR(Nports,Freq)
 	averagingMethod="IEEE/IEC 62704-1"
 
 	'CP-Mode
-	objN = "SAR_CP"
-	If Resulttree.DoesTreeItemExist("2D/3D Results\SAR\" & objN ) Then
-		With Resulttree
-			.Name ("2D/3D Results\SAR\" & objN )
-			.Delete
-		End With
-	End If
-	If Not Resulttree.DoesTreeItemExist("2D/3D Results\SAR\" & objN ) Then
-		With SAR
-			.reset
-			.PowerlossMonitor("loss (f=297.2) [CP]")
-			.AverageWeight(10)
-			.SetLabel("SAR_CP")
-			'# set to 1W stimulated power
-			.SetOption("scale stimulated")
-			.SetOption("rescale 1")
-			.SetOption (averagingMethod)
-			.Create
-		End With
+	'objN = "SAR_CP"
+	'If Resulttree.DoesTreeItemExist("2D/3D Results\SAR\" & objN ) Then
+	'	With Resulttree
+	'		.Name ("2D/3D Results\SAR\" & objN )
+	'		.Delete
+	'	End With
+	'End If
+	'If Not Resulttree.DoesTreeItemExist("2D/3D Results\SAR\" & objN ) Then
+	'	With SAR
+	'		.reset
+	'		.PowerlossMonitor("loss (f=297.2) [CP]")
+	'		.AverageWeight(10)
+	'		.SetLabel("SAR_CP")
 
-	End If
+			'# set to 1W stimulated power
+	'		.SetOption("scale stimulated")
+	'		.SetOption("rescale 1")
+	'		.SetOption (averagingMethod)
+	'		.Create
+	'	End With
+
+'	End If
 
 	For i=1 To Nports
 		objN = "SAR_CH" & i
@@ -131,7 +132,7 @@ Sub CalcSAR(Nports,Freq)
 		If Not Resulttree.DoesTreeItemExist( "2D/3D Results\SAR\" & objN ) Then
 			With SAR
 				.reset
-				.PowerlossMonitor("loss (f=297.2) [CH_" & i & "]")
+				.PowerlossMonitor("loss (f=297.2) [CH" & i & "]")
 				.AverageWeight(10)
 				'.Volume(xmin,xmax,ymin,ymax,zmin,zmax)
 				'.SetOption("subvolume only")
@@ -155,7 +156,7 @@ Sub SARExport(Nports,Freq,Stepsize, AName, pDimension, Orientation,ExportFolder)
 	Dim Export As String
 	'MkDir ExportFolder
 	'CP-Mode
-	If SelectTreeItem ("2D/3D Results\SAR\SAR_CP") Then
+	If SelectTreeItem ("2D/3D Results\SAR\SAR_CH1") Then
 
 		Plot3DPlotsOn2DPlane False
 		Wait(1)
@@ -164,30 +165,29 @@ Sub SARExport(Nports,Freq,Stepsize, AName, pDimension, Orientation,ExportFolder)
 			.FileName (ExportFolder + ".\" + AName + "_" + pDimension + "_SAR" + Orientation + ".h5")
 			.Mode ("FixedWidth")
 			.SetfileType("hdf5")
-			.SetSubvolume(-290,-40,-100,100,-100,200) 'Element Selection
-			'.SetSubvolume(-10,10,-100,100,-100,100)
+			.SetSubvolume(-110,110,-100,120,-82,182)
 			.UseSubvolume(True)
 			.Step(Stepsize)
 			.Execute
 		End With
 	End If
 
-	For i=1 To Nports
-		If SelectTreeItem ("2D/3D Results\SAR\SAR_CH" & i) Then
-			Plot3DPlotsOn2DPlane False
-			Wait(1)
-			With ASCIIExport
-				.Reset
-				.FileName (ExportFolder + ".\" + AName + "_" + pDimension + "_SAR" + Orientation + "_CH_" & i & ".h5")
-				.Mode ("FixedWidth")
-				.SetfileType("hdf5")
-				.SetSubvolume(-290,-40,-100,100,-100,200) 'Change for ROI
-				.UseSubvolume(True)
-				.Step(Stepsize)
-				.Execute
-			End With
-		End If
-	Next
+	'For i=1 To Nports
+'		If SelectTreeItem ("2D/3D Results\SAR\SAR_CH" & i) Then
+		'	Plot3DPlotsOn2DPlane False
+		'	Wait(1)
+		'	With ASCIIExport
+		'		.Reset
+		'		.FileName (ExportFolder + ".\" + AName + "_" + pDimension + "_SAR" + Orientation + "_CH_" & i & ".h5")
+		'		.Mode ("FixedWidth")
+		'		.SetfileType("hdf5")
+		'		.SetSubvolume(-290,-40,-100,100,-100,200) 'Change for ROI
+		'		.UseSubvolume(True)
+		'		.Step(Stepsize)
+		'		.Execute
+		'	End With
+	'	End If
+	'Next
 End Sub
 
 Sub HExport(Nports,Freq,Stepsize, AName, pDimension, Orientation,ExportFolder)
@@ -195,39 +195,39 @@ Sub HExport(Nports,Freq,Stepsize, AName, pDimension, Orientation,ExportFolder)
 
 	'MkDir ExportFolder
 	'CP-Mode
-	If SelectTreeItem ("2D/3D Results\H-Field\h-field (f=297.2) [CP]") Then
+	If SelectTreeItem ("2D/3D Results\H-Field\h-field (f=297.2) [CH1]") Then
 
 		Plot3DPlotsOn2DPlane False
 		Wait(1)
 		With ASCIIExport
 			.Reset
-			.FileName (ExportFolder + ".\" + AName + "_" + pDimension + "_H" + Orientation + ".h5")
+			.FileName (ExportFolder + ".\" + AName + "_" + pDimension + "_H" + Orientation + "_CH_1.h5")
 			.Mode ("FixedWidth")
 			.SetfileType("hdf5")
-		.SetSubvolume(-290,-40,-100,100,-100,200) 'Change for ROI
+			.SetSubvolume(-110,110,-100,120,-82,182)
 			.UseSubvolume(True)
 			.Step(Stepsize)
 			.Execute
 		End With
 	End If
 
-	For i=1 To Nports
-		If SelectTreeItem ("2D/3D Results\H-Field\h-field (f=297.2) [CH_" & i &"]") Then
-
-			Plot3DPlotsOn2DPlane False
-			Wait(1)
-			With ASCIIExport
-				.Reset
-				.FileName (ExportFolder + ".\" + AName + "_" + pDimension + "_H" + Orientation + "_CH_"&i&".h5")
-				.Mode ("FixedWidth")
-				.SetfileType("hdf5")
-				.SetSubvolume(-290,-40,-100,100,-84,100) 'Change for ROI
-				.UseSubvolume(True)
-				.Step(Stepsize)
-				.Execute
-			End With
-		End If
-	Next
+	'For i=1 To Nports
+	'	If SelectTreeItem ("2D/3D Results\H-Field\h-field (f=297.2) [CH_" & i &"]") Then
+'
+	'		Plot3DPlotsOn2DPlane False
+	'		Wait(1)
+	'		With ASCIIExport
+	'			.Reset
+	'			.FileName (ExportFolder + ".\" + AName + "_" + pDimension + "_H" + Orientation + "_CH_"&i&".h5")
+		'		.Mode ("FixedWidth")
+		'		.SetfileType("hdf5")
+		'		.SetSubvolume(-290,-40,-100,100,-84,100) 'Change for ROI
+		'		.UseSubvolume(True)
+		'		.Step(Stepsize)
+		'		.Execute
+		'	End With
+	'	End If
+	'Next
 
 End Sub
 

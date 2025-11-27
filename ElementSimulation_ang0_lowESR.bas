@@ -9,11 +9,11 @@ Sub Main ()
 	Nports=1
 	Stepsize=2
 
-	AName="CL"
+	AName="RL_Adj"
 	pDimension="3D"
-	Orientation="_Ang_0"
-	ExportFolder = "Z:\CST_Daten\Simulationen\ElementSimulation\Ergebnisse\LowESR\1CH" 'change for directory
-	SubV= Array(-290,-40,-100,100,-100,200) 'Volume
+	Orientation=""
+	ExportFolder = "Z:\CST_Daten\Simulationen\ElementSimulation\Ergebnisse\Gufi" 'change for directory
+	SubV= Array(-183,-57,-127,127,-191,191) 'Volume
 			'.SetSubvolume(-290,-40,-100,100,-100,200) 'Element Selection (0° und 45°)
 			'.SetSubvolume(-290,-40,-100,140,-100,200) 'Element Selection (90°)(für SAR x:-290 0)
 			'SetSubvolume(-250,250,0,250,-250,250) 'PaperBilgun Bilguun simus
@@ -22,13 +22,13 @@ Sub Main ()
 			'(-183,-57,-127,127,-191,191) Vergleich Simu Meas
 			'-160,160,90,254,-210,210 Vergleich Simu Measurement paper bilgun
 			'-184,-16,-160,160,-210,210 Vergleich Simu Measurement paper joris
-	Call CalcSAR(Nports,Freq)
+	'Call CalcSAR(Nports,Freq)
 
 	'Call PowerExport(AName,ExportFolder)
 	'Call SARExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
-	'Call HExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
+	Call HExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
 	'Call EExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
-	'Call PLDExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
+	Call PLDExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
 
 End Sub
 

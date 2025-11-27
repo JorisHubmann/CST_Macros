@@ -9,10 +9,10 @@ Sub Main ()
 	Nports=1
 	Stepsize=2
 
-	AName="MS"
+	AName="RD"
 	pDimension="3D"
 	Orientation="" '_Ang_90
-	ExportFolder = "Z:\CST_Daten\Simulationen\ElementSimulation\Ergebnisse\Gufi" 'change for directory
+	ExportFolder = "E:\CST\ElementSimus\Ergebnisse\Gufi" '"Z:\CST_Daten\Simulationen\ElementSimulation\Ergebnisse\Gufi" 'change for directory
 	SubV= Array(-183,-57,-127,127,-191,191) 'Volume
 			'.SetSubvolume(-290,-40,-100,100,-100,200) 'Element Selection (0° und 45°)
 			'.SetSubvolume(-290,-40,-100,140,-100,200) 'Element Selection (90°)(für SAR x:-290 0)

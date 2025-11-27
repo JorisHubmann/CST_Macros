@@ -7,13 +7,13 @@ Sub Main ()
 	Dim AName, pDimension, Orientation, ExportFolder As String
 
 	Nports=1
-	Stepsize=2
+	Stepsize=4
 
-	AName="FD_Head"
+	AName="FD_20mm"
 	pDimension="3D"
 	Orientation=""
-	ExportFolder = "Z:\CST_Daten\Simulationen\ElementSimulation\Ergebnisse\PowerDiff" 'change for directory
-	SubV= Array(-300,100,-10,10,-120,140) 'Volume
+	ExportFolder = "Z:\CST_Daten\Simulationen\PaperMitBilgun\Ergebnisse" 'change for directory
+	SubV= Array(-250,250,0,252,-250,250) 'Volume
 			'.SetSubvolume(-290,-40,-100,100,-100,200) 'Element Selection (0° und 45°)
 			'.SetSubvolume(-290,-40,-100,140,-100,200) 'Element Selection (90°)(für SAR x:-290 0)
 			'SetSubvolume(-250,250,0,250,-250,250) 'PaperBilgun Bilguun simus

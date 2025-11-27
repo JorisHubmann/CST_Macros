@@ -1,4 +1,4 @@
-'#Language "WWB-COM" test test
+'#Language "WWB-COM"
 
 ' H_SAR_AsciiExport
 Sub Main ()

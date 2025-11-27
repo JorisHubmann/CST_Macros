@@ -10,7 +10,7 @@ Sub Main ()
 	'Variables
 	Nports=8 'Number of Channels
 	Stepsize=2 'Stepsize of the Data export
-	AName="120" 'Change for Result Data Name
+	AName="140" 'Change for Result Data Name
 	pDimension="3D" 'Keep it to 3D
 	Orientation=""	'Only be set for 2D and 1D data Export - Keep at ""
 	ExportFolder = "E:\CST\LoopDiameter\Ergebnisse" 'change for directory

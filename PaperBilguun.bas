@@ -9,12 +9,12 @@ Sub Main ()
 	Nports=1
 	Stepsize=4
 
-	AName="LP_20mm"
+	AName="LP_Val_n"
 	pDimension="3D"
 	Orientation=""
 	ExportFolder = "Z:\CST_Daten\Simulationen\PaperMitBilgun\Ergebnisse" 'change for directory
-	SubV= Array(-150,150,-2,150,-200,200) 'Volume
-
+	SubV= Array(-184,-16,-160,160,-210,210) 'LP Validation Volume
+	'SubV= Array(-160,160,90,254,-210,210) 'FD Validation Volume
 	Call SARExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
 	Call HExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
 

@@ -8,9 +8,9 @@ Sub Main ()
 	Dim AName, pDimension, Orientation, ExportFolder As String
 
 	'Variables
-	Nports=8 'Number of Channels
+	Nports=8 'Number of Channelss
 	Stepsize=2 'Stepsize of the Data export
-	AName="RD_8" 'Change for Result Data Name
+	AName="FD_S" 'Change for Result Data Name
 	pDimension="3D" 'Keep it to 3D
 	Orientation=""	'Only be set for 2D and 1D data Export - Keep at ""
 	ExportFolder = "Z:\CST_Daten\Simulationen\ElementSimulation\Ergebnisse\8CH" 'change for directory
@@ -26,10 +26,12 @@ Sub Main ()
 	'Functions
 	'Call createModes(Nports,Phase,Amp)
 	'Call CalcSAR(Nports)
-	Call SARExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubVSAR)
-	Call HExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubV)
+	'Call SARExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubVSAR)
+	'Call HExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubV)
 	'Call EExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubV)
 	'Call B1Shim(Nports,Stepsize,AName,PhaseShim,AmpShim,pDimension, Orientation, ExportFolder,SubV,SubVSAR)
+	Call PowerExport(AName, ExportFolder)
+
 End Sub
 
 '%%%%%%%%%%%%%%%
@@ -329,5 +331,34 @@ Sub B1Shim(Nports,Stepsize,AName, PhaseShim,AmpShim, pDimension, Orientation, Ex
 			.Execute
 		End With
 	End If
+End Sub
 
+Sub PowerExport(AName,ExportFolder)
+	If SelectTreeItem ("1D Results\Power\Excitation [CP]") Then 'Name of the Result Folder
+		Wait(1)
+		With ASCIIExport
+			.Reset
+			.FileName (ExportFolder + ".\" + AName + "_Power" + ".txt") 'Export File name
+			.SetfileType("txt") 'Datatype
+			.Execute 'Starts Export
+		End With
+	End If
+	If SelectTreeItem ("1D Results\Power\Excitation [CP]\Loss per Material") Then 'Name of the Result Folder
+	Wait(1)
+	With ASCIIExport
+		.Reset
+		.FileName (ExportFolder + ".\" + AName + "_Dielectric" + ".txt") 'Export File name
+		.SetfileType("txt") 'Datatype
+		.Execute 'Starts Export
+	End With
+	End If
+	If SelectTreeItem ("1D Results\Power\Excitation [CP]\Loss per Material\Voxel Data") Then 'Name of the Result Folder
+	Wait(1)
+	With ASCIIExport
+		.Reset
+		.FileName (ExportFolder + ".\" + AName + "_Voxel" + ".txt") 'Export File name
+		.SetfileType("txt") 'Datatype
+		.Execute 'Starts Export
+	End With
+	End If
 End Sub

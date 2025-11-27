@@ -74,4 +74,23 @@ Sub CalcSAR(Nports)
 				.Create
 			End With
 		End If
+
+	For i=2 To Nports
+		objN = "TxCh" & i
+
+		If Not Resulttree.DoesTreeItemExist( "2D/3D Results\SAR\" & objN ) Then
+			With SAR
+				.reset
+				.PowerlossMonitor("loss (f=297.2) [TxCh" & i & "]")
+				.AverageWeight(10)
+				.SetLabel(objN)
+				'# set to 1W stimulated power
+				.SetOption("scale stimulated")
+				.SetOption("rescale 0.02")
+				.SetOption (averagingMethod)
+				.SetOption("no ar results")
+				.Create
+			End With
+		End If
+	Next
 End Sub
