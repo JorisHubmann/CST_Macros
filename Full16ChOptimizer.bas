@@ -27,11 +27,11 @@ Sub Main ()
 
 	'Call Spara
 	'Call Optimizer2CHDecouple
-	Call Optimizer(Nports)
+	'Call Optimizer(Nports)
 	'Call createModes(Nports,Phase,Amp)
-	'Call CalcSAR(Nports)
-	'Call SARExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubVSAR)
-	'Call HExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubV)
+	Call CalcSAR(Nports)
+	Call SARExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubVSAR)
+	Call HExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubV)
 	'Call EExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubV)
 	'Call B1Shim(Nports,Stepsize,AName,PhaseShim,AmpShim,pDimension, Orientation, ExportFolder,SubV,SubVSAR)
 End Sub
@@ -212,7 +212,7 @@ Sub createModes(Nports,Phase,Amp)
 				.SetPortSourceType(i, "Signal")
 				.SetProperty ("enabled", "True")
 			Next
-			.Update
+			'.Update
 		End If
 	.setProperty("enabled","False")
 	End With
@@ -234,7 +234,7 @@ Sub createModes(Nports,Phase,Amp)
 				.SetComplexPortExcitation(i, Sqr(2), 0)
 				.SetPortSourceType(i, "Signal")
 				.SetProperty ("enabled", "True")
-				.Update
+				'.Update
 			End If
 			.SetProperty ("enabled", "False")
 		End With
@@ -268,24 +268,24 @@ Sub CalcSAR(Nports)
 
 	End If
 
-	For i=1 To Nports
-		objN = "SAR_CH" & i
+'	For i=1 To Nports
+'		objN = "SAR_CH" & i
 
-		If Not Resulttree.DoesTreeItemExist( "2D/3D Results\SAR\" & objN ) Then
-			With SAR
-				.reset
-				.PowerlossMonitor("loss (f=297.2) [CH_" & i & "]")
-				.AverageWeight(10)
-				.SetLabel(objN)
-				'# set to 1W stimulated power
-				.SetOption("scale stimulated")
-				.SetOption("rescale 1")
-				.SetOption (averagingMethod)
-				.Create
-				'MsgBox ("CH_" & i & " max SAR =" & .GetValue("max sar"))
-			End With
-		End If
-	Next
+	'	If Not Resulttree.DoesTreeItemExist( "2D/3D Results\SAR\" & objN ) Then
+	'		With SAR
+	'			.reset
+	'			.PowerlossMonitor("loss (f=297.2) [CH_" & i & "]")
+	'			.AverageWeight(10)
+	'			.SetLabel(objN)
+	'			'# set to 1W stimulated power
+	'			.SetOption("scale stimulated")
+	'			.SetOption("rescale 1")
+	'			.SetOption (averagingMethod)
+	'			.Create
+	'			'MsgBox ("CH_" & i & " max SAR =" & .GetValue("max sar"))
+	'		End With
+	'	End If
+	'Next
 End Sub
 
 '%%%%%%%%%%%%%%%%%%%%%%%
@@ -311,22 +311,22 @@ Sub SARExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubVS
 		End With
 	End If
 
-	For i=1 To Nports
-		If SelectTreeItem ("2D/3D Results\SAR\SAR_CH" & i) Then
-			Plot3DPlotsOn2DPlane False
-			Wait(1)
-			With ASCIIExport
-				.Reset
-				.FileName (ExportFolder + ".\" + AName + "_" + pDimension + "_SAR" + Orientation + "_CH_" & i & ".h5")
-				.Mode ("FixedWidth")
-				.SetfileType("hdf5")
-				.SetSubvolume(SubVSAR(0),SubVSAR(1),SubVSAR(2),SubVSAR(3),SubVSAR(4),SubVSAR(5)) 'Change for ROI
-				.UseSubvolume(True)
-				.Step(Stepsize)
-				.Execute
-			End With
-		End If
-	Next
+'	For i=1 To Nports
+'		If SelectTreeItem ("2D/3D Results\SAR\SAR_CH" & i) Then
+	'		Plot3DPlotsOn2DPlane False
+	'		Wait(1)
+	'		With ASCIIExport
+	'			.Reset
+	'			.FileName (ExportFolder + ".\" + AName + "_" + pDimension + "_SAR" + Orientation + "_CH_" & i & ".h5")
+	'			.Mode ("FixedWidth")
+	'			.SetfileType("hdf5")
+	'			.SetSubvolume(SubVSAR(0),SubVSAR(1),SubVSAR(2),SubVSAR(3),SubVSAR(4),SubVSAR(5)) 'Change for ROI
+	'			.UseSubvolume(True)
+	'			.Step(Stepsize)
+	'			.Execute
+	'		End With
+	'	End If
+'	Next
 End Sub
 
 Sub HExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubV)
@@ -350,23 +350,23 @@ Sub HExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubV)
 		End With
 	End If
 
-	For i=1 To Nports
-		If SelectTreeItem ("2D/3D Results\H-Field\h-field (f=297.2) [CH_" & i &"]") Then
-
-			Plot3DPlotsOn2DPlane False
-			Wait(1)
-			With ASCIIExport
-				.Reset
-				.FileName (ExportFolder + ".\" + AName + "_" + pDimension + "_H" + Orientation + "_CH_" & i & ".h5")
-				.Mode ("FixedWidth")
-				.SetfileType("hdf5")
-				.SetSubvolume(SubV(0),SubV(1),SubV(2),SubV(3),SubV(4),SubV(5)) 'Change for ROI
-				.UseSubvolume(True)
-				.Step(Stepsize)
-				.Execute
-			End With
-		End If
-	Next
+	'For i=1 To Nports
+	'	If SelectTreeItem ("2D/3D Results\H-Field\h-field (f=297.2) [CH_" & i &"]") Then
+'
+	'		Plot3DPlotsOn2DPlane False
+	'		Wait(1)
+	'		With ASCIIExport
+	'			.Reset
+	'			.FileName (ExportFolder + ".\" + AName + "_" + pDimension + "_H" + Orientation + "_CH_" & i & ".h5")
+	'			.Mode ("FixedWidth")
+	'			.SetfileType("hdf5")
+	'			.SetSubvolume(SubV(0),SubV(1),SubV(2),SubV(3),SubV(4),SubV(5)) 'Change for ROI
+	'			.UseSubvolume(True)
+	'			.Step(Stepsize)
+	'			.Execute
+	'		End With
+	'	End If
+	'Next
 
 End Sub
 
