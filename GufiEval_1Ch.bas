@@ -9,10 +9,10 @@ Sub Main ()
 	Nports=1
 	Stepsize=2
 
-	AName="RD"
+	AName="CL_TD_Cu"
 	pDimension="3D"
 	Orientation="" '_Ang_90
-	ExportFolder = "E:\CST\ElementSimus\Ergebnisse\Gufi" '"Z:\CST_Daten\Simulationen\ElementSimulation\Ergebnisse\Gufi" 'change for directory
+	ExportFolder = "Y:\CST\ShortMS\Messungen" '"Z:\CST_Daten\Simulationen\ElementSimulation\Ergebnisse\Gufi" 'change for directory
 	SubV= Array(-183,-57,-127,127,-191,191) 'Volume
 			'.SetSubvolume(-290,-40,-100,100,-100,200) 'Element Selection (0° und 45°)
 			'.SetSubvolume(-290,-40,-100,140,-100,200) 'Element Selection (90°)(für SAR x:-290 0)
@@ -25,9 +25,10 @@ Sub Main ()
 	'Call CalcSAR(Nports,Freq)
 
 	'Call SARExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
-	Call HExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
+	'Call HExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
 	'Call EExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
-	Call PLDExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
+	'Call PLDExport(Nports,Freq,Stepsize, AName, pDimension, Orientation, ExportFolder,SubV)
+	Call PowerExport(AName,ExportFolder)
 End Sub
 
 Sub CalcSAR(Nports,Freq)
@@ -89,7 +90,7 @@ Sub HExport(Nports,Freq,Stepsize, AName, pDimension, Orientation,  ExportFolder,
 
 	'MkDir ExportFolder
 	'CP-Mode
-	If SelectTreeItem ("2D/3D Results\H-Field\h-field (f=297.2) [AC1]") Then
+	If SelectTreeItem ("2D/3D Results\H-Field\h-field (f=297.2) [AC2]") Then
 
 		Plot3DPlotsOn2DPlane False
 		Wait(1)
@@ -116,7 +117,7 @@ Sub PLDExport(Nports,Freq,Stepsize, AName, pDimension, Orientation,  ExportFolde
 
 	'MkDir ExportFolder
 	'CP-Mode
-	If SelectTreeItem ("2D/3D Results\Power Loss Dens.\loss (f=297.2) [AC1]") Then
+	If SelectTreeItem ("2D/3D Results\Power Loss Dens.\loss (f=297.2) [AC2]") Then
 
 		Plot3DPlotsOn2DPlane False
 		Wait(1)
@@ -159,5 +160,35 @@ Sub EExport(Nports,Freq,Stepsize, AName, pDimension, Orientation,  ExportFolder,
 			.Step(Stepsize)
 			.Execute
 		End With
+	End If
+End Sub
+
+Sub PowerExport(AName,ExportFolder)
+	If SelectTreeItem ("1D Results\Power\Excitation [AC1]") Then 'Name of the Result Folder
+		Wait(1)
+		With ASCIIExport
+			.Reset
+			.FileName (ExportFolder + ".\" + AName + "_Power" + ".txt") 'Export File name
+			.SetfileType("txt") 'Datatype
+			.Execute 'Starts Export
+		End With
+	End If
+	If SelectTreeItem ("1D Results\Power\Excitation [AC1]\Loss per Material") Then 'Name of the Result Folder
+	Wait(1)
+	With ASCIIExport
+		.Reset
+		.FileName (ExportFolder + ".\" + AName + "_Dielectric" + ".txt") 'Export File name
+		.SetfileType("txt") 'Datatype
+		.Execute 'Starts Export
+	End With
+	End If
+	If SelectTreeItem ("1D Results\Power\Excitation [AC1]\Loss per Material\Voxel Data") Then 'Name of the Result Folder
+	Wait(1)
+	With ASCIIExport
+		.Reset
+		.FileName (ExportFolder + ".\" + AName + "_Voxel" + ".txt") 'Export File name
+		.SetfileType("txt") 'Datatype
+		.Execute 'Starts Export
+	End With
 	End If
 End Sub

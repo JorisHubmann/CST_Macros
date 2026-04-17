@@ -10,12 +10,12 @@ Sub Main ()
 	'Variables
 	Nports=2 'Number of Channelss
 	Stepsize=2 'Stepsize of the Data export
-	AName="Gufi20" 'Change for Result Data Name
+	AName="M30_E_PC" 'Change for Result Data Name
 	pDimension="3D" 'Keep it to 3D
 	Orientation=""	'Only be set for 2D and 1D data Export - Keep at ""
-	ExportFolder =  "Y:\CST\ShortMS\Decoupling\Ergebnisse" '"Y:\CST\ShortMS\Decoupling\Ergebnisse"'  'change for directory
-	SubV= Array(-176,-64,-226,226,-142,142) ' Gufi
-	'SubV= Array(-110,110,-116,130,-230,128) 'Head
+	ExportFolder =  "Y:\CST\ShortMS\Dec_Head\Ergebnisse" '"Y:\CST\ShortMS\Decoupling\Ergebnisse"'  'change for directory
+	'SubV= Array(-176,-64,-226,226,-142,142) ' Gufi
+	SubV= Array(-110,110,-116,130,-230,128) 'Head
 	Call PowerExport(AName, ExportFolder)
 	Call HExport(Nports,Stepsize, AName, pDimension, Orientation,ExportFolder,SubV)
 
